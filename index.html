@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<!-- Start of linktic748331778258371 Zendesk Widget script -->
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=7740523d-2359-430e-acee-53f3d22ebae9"> </script>
+<!-- End of linktic748331778258371 Zendesk Widget script -->
+
+<!-- Tu lanzador personalizado -->
+<div id="miLanzador">
+  <div id="miLanzadorIcono">
+    <div class="front">
+      <img class="logo-default" src="img/icon.svg" alt="Abrir chat">
+      <img class="logo-hover" src="img/hover.svg" alt="Abrir chat">
+    </div>
+    <div class="back">
+      <img class="logo-hide" src="img/hide.svg" alt="Ocultar chat">
+    </div>
+  </div>
+  <span id="miLanzadorBadge"></span>
+</div>
+
+<style>
+  #miLanzador {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 9999999;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform;
+    transform: translateZ(0);
+  }
+  #miLanzador:hover {
+    transform: scale(1.05);
+  }
+  #miLanzadorIcono {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease;
+  }
+  #miLanzadorIcono.abierto {
+    transform: rotateX(180deg);
+  }
+  #miLanzadorIcono .front,
+  #miLanzadorIcono .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+  }
+  #miLanzadorIcono .front {
+    background: transparent;
+  }
+  #miLanzadorIcono .back {
+    background: #FF6B35;
+    border-radius: 50%;
+    transform: rotateX(180deg);
+  }
+  #miLanzadorIcono .front img,
+  #miLanzadorIcono .back img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  #miLanzadorIcono .back .logo-hide { object-fit: contain; }
+  #miLanzadorIcono .front .logo-hover,
+  #miLanzadorIcono .front .logo-default {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  #miLanzadorIcono .front .logo-default {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+  #miLanzadorIcono .front .logo-hover {
+    opacity: 0;
+    pointer-events: none;
+    width: auto;
+    height: 100%;
+    left: -225px;
+    top: 0;
+    border-radius: 0;
+    transition: opacity 0.3s ease;
+  }
+  #miLanzador:hover #miLanzadorIcono .front .logo-default {
+    opacity: 0;
+  }
+  #miLanzador:hover #miLanzadorIcono .front .logo-hover {
+    opacity: 1;
+  }
+  #miLanzador.abierto:hover #miLanzadorIcono .front .logo-hover {
+    opacity: 0;
+  }
+  #miLanzador.abierto:hover #miLanzadorIcono .front .logo-default {
+    opacity: 1;
+  }
+  #miLanzadorBadge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #e6273f;
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 1px 6px;
+    display: none;
+  }
+  @media (max-width: 768px) {
+    #miLanzadorIcono .back {
+      transform: rotateX(180deg) translateY(-50px) translateX(12px) scale(0.6);
+    }
+  }
+</style>
+
+<script>
+  var launcher = document.getElementById('miLanzador');
+  var badge = document.getElementById('miLanzadorBadge');
+  var icono = document.getElementById('miLanzadorIcono');
+  var isOpen = false;
+
+  function setChatState(open) {
+    isOpen = open;
+    icono.classList.toggle('abierto', open);
+    launcher.classList.toggle('abierto', open);
+  }
+
+  // Configurar posición del widget para que flote sobre el launcher
+  zE('messenger:set', 'customization', {
+    position: {
+      side: 'right',
+      offset: {
+        web: { horizontal: 16, vertical: 100 },
+        mobile: { horizontal: 16, vertical: 100 }
+      }
+    }
+  });
+
+  // Al cargar, asegúrate de que el widget esté cerrado
+  zE('messenger', 'close');
+  setChatState(false);
+
+  launcher.addEventListener('click', function () {
+    if (isOpen) {
+      zE('messenger', 'close');
+    } else {
+      zE('messenger', 'open');
+    }
+  });
+
+  zE('messenger:on', 'open', function () {
+    setChatState(true);
+  });
+
+  zE('messenger:on', 'close', function () {
+    setChatState(false);
+  });
+
+  zE('messenger:on', 'unreadMessages', function (count) {
+    if (count > 0) {
+      badge.textContent = count;
+      badge.style.display = 'block';
+    } else {
+      badge.style.display = 'none';
+    }
+  });
+</script>
+<body>
+</body>
+</html>
