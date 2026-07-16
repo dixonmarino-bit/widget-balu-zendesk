@@ -39,6 +39,9 @@
     justify-content: center;
     will-change: transform;
     transform: translateZ(0);
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
   }
   #miLanzador:hover {
     transform: scale(1.05);
@@ -77,6 +80,9 @@
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
   }
   #miLanzadorIcono .back .logo-hide { object-fit: contain; }
   #miLanzadorIcono .front .logo-hover,
